@@ -31,9 +31,9 @@ runs:
     # This is  an un-official build that allows helm login to the ECR
     - uses: aws-actions/amazon-ecr-login@arjraman
       id: login-ecr
-    - uses: 2iq/aws-ecr-create-repository@main
+    - uses: int128/create-ecr-repository-action@v1
       with:
-        ecr-name: ${{ inputs.ecr-repository-name }}
+        repository: ${{ inputs.ecr-repository-name }}
     - name: Install PyBump
       run: |
         python3 -m pip install pybump
