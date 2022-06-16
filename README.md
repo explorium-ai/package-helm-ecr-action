@@ -1,6 +1,6 @@
-# Get Latest ECR Image
+# Package Helm ECR Action
 
-Query and get latest ECR image of a specific tag and pull it if needed
+Package a helm chart and deploy to an AWS ECR repository using OCI
 <!-- ## Inputs
 
 | Input | Type | Description | Default | Required
