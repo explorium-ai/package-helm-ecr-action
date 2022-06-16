@@ -1,7 +1,7 @@
 name: Package Helm ECR
 description: Package a helm chart and deploy to an AWS ECR repository using OCI
 branding:
-  icon: box
+  icon: hard-drive
   color: blue
 inputs:
   aws-access-key-id:
