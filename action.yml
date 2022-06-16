@@ -47,6 +47,6 @@ runs:
         ${{ inputs.chart-path }} \
         --app-version ${{ inputs.tag-name }} \
         --version ${{ inputs.tag-name }}
-        echo pushing ${{ inputs.ecr-repository-name }}-${{ inputs.tag-name }}.tgz to oci://$ECR_REGISTRY
-        helm push ${{ inputs.ecr-repository-name }}-${{ inputs.tag-name }}.tgz oci://$ECR_REGISTRY
+        echo pushing $(basename ${{ inputs.chart-path }})-${{ inputs.tag-name }}.tgz to oci://$ECR_REGISTRY
+        helm push $(basename ${{ inputs.chart-path }})-${{ inputs.tag-name }}.tgz oci://$ECR_REGISTRY
       shell: bash
