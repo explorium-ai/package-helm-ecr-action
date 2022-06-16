@@ -14,8 +14,8 @@ inputs:
     description: the name of the ecr repository
     required: true
   aws-region:
-      description: The AWS region, default us-east-2
-      default: us-east-2
+      description: The AWS region, default eu-west-1
+      default: eu-west-1
       required: false
   tag-name:
     description: image tag name
