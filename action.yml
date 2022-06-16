@@ -10,9 +10,6 @@ inputs:
   aws-secret-access-key:
     description: The AWS access key
     required: true
-  ecr-repository-name:
-    description: the name of the ecr repository
-    required: true
   aws-region:
       description: The AWS region, default eu-west-1
       default: eu-west-1
@@ -39,7 +36,7 @@ runs:
     - name: Create AWS ECR Repository if it does not exist
       shell: bash
       run: |
-        aws ecr describe-repositories --repository-names ${{ inputs.ecr-repository-name }} || aws ecr create-repository --repository-name ${{ inputs.ecr-repository-name }}
+        aws ecr describe-repositories --repository-names $(basename ${{ inputs.chart-path }}) || aws ecr create-repository --repository-name $(basename ${{ inputs.chart-path }})
 
     - name: Install PyBump
       run: |
