@@ -17,9 +17,6 @@ inputs:
       description: The AWS region, default eu-west-1
       default: eu-west-1
       required: false
-  tag-name:
-    description: image tag name
-    required: true
   chart-path:
     description: the directory path to the specified chart
     required: true
@@ -37,16 +34,21 @@ runs:
     - uses: 2iq/aws-ecr-create-repository@main
       with:
         ecr-name: ${{ inputs.ecr-repository-name }}
+    - name: Install PyBump
+      run: |
+        python3 -m pip install pybump
+      shell: bash
     - name: Helm Chart
       env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ${{ inputs.ecr-repository-name }}
           HELM_EXPERIMENTAL_OCI: "1"
       run : |
+        version=$(pybump get --file ${{ inputs.chart-path }})
         helm package \
         ${{ inputs.chart-path }} \
-        --app-version ${{ inputs.tag-name }} \
-        --version ${{ inputs.tag-name }}
-        echo pushing $(basename ${{ inputs.chart-path }})-${{ inputs.tag-name }}.tgz to oci://$ECR_REGISTRY
-        helm push $(basename ${{ inputs.chart-path }})-${{ inputs.tag-name }}.tgz oci://$ECR_REGISTRY
+        --app-version $version \
+        --version $version
+        echo pushing $(basename ${{ inputs.chart-path }})-$version.tgz to oci://$ECR_REGISTRY
+        helm push $(basename ${{ inputs.chart-path }})-$version.tgz oci://$ECR_REGISTRY
       shell: bash
