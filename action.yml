@@ -34,7 +34,7 @@ runs:
     # This is  an un-official build that allows helm login to the ECR
     - uses: aws-actions/amazon-ecr-login@arjraman
       id: login-ecr
-    - uses: 2iq/aws-ecr-create-repository@v1
+    - uses: 2iq/aws-ecr-create-repository@main
       with:
         ecr-name: ${{ inputs.ecr-repository-name }}
     - name: Helm Chart
