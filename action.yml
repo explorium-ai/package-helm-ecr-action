@@ -44,7 +44,7 @@ runs:
           ECR_REPOSITORY: ${{ inputs.ecr-repository-name }}
           HELM_EXPERIMENTAL_OCI: "1"
       run : |
-        version=$(pybump get --file ${{ inputs.chart-path }})
+        version=$(pybump get --file ${{ inputs.chart-path }}/Chart.yaml)
         helm package \
         ${{ inputs.chart-path }} \
         --app-version $version \
