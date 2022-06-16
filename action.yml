@@ -1,0 +1,47 @@
+name: Package Helm ECR
+description: Package a helm chart and deploy to an AWS ECR repository using OCI
+branding:
+  icon: box
+  color: blue
+inputs:
+  aws-access-key-id:
+    description: The AWS access Key id
+    required: true
+  aws-secret-access-key:
+    description: The AWS access key
+    required: true
+  ecr-repository-name:
+    description: the name of the ecr repository
+    required: true
+  aws-region:
+      description: The AWS region, default us-east-2
+      default: us-east-2
+      required: false
+  tag-name:
+    description: image tag name
+    required: true
+  chart-path:
+    description: the directory path to the specified chart
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ inputs.aws-access-key-id }}
+        aws-secret-access-key: ${{ inputs.aws-secret-access-key }}
+        aws-region: ${{ inputs.aws-region }}
+    # This is  an un-official build that allows helm login to the ECR
+    - uses: aws-actions/amazon-ecr-login@arjraman
+      id: login-ecr
+    - name: Helm Chart
+      env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ inputs.ecr-repository-name }}
+      run : |
+        helm package \
+        ${{ inputs.chart-path }} \
+        --app-version ${{ inputs.tag-name }} \
+        --version ${{ inputs.tag-name }}
+        helm push "${{ inputs.ecr-repository-name }}-${{ inputs.tag-name }}.tgz" oci://$ECR_REGISTRY
+      shell: bash
