@@ -38,6 +38,7 @@ runs:
       env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ${{ inputs.ecr-repository-name }}
+          HELM_EXPERIMENTAL_OCI: "1"
       run : |
         helm package \
         ${{ inputs.chart-path }} \
