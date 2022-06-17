@@ -14,6 +14,10 @@ inputs:
       description: The AWS region, default eu-west-1
       default: eu-west-1
       required: false
+  ecr-repo-name:
+      description: ECR Repo name to create/deploy to
+      default: eu-west-1
+      required: false
   chart-path:
     description: the directory path to the specified chart
     required: true
@@ -35,8 +39,10 @@ runs:
 
     - name: Create AWS ECR Repository if it does not exist
       shell: bash
+      env:
+        ECR_REPOSITORY: ${{ inputs.ecr-repo-name }}
       run: |
-        aws ecr describe-repositories --repository-names $(basename ${{ inputs.chart-path }}) || aws ecr create-repository --repository-name $(basename ${{ inputs.chart-path }})
+        aws ecr describe-repositories --repository-names $ECR_REGISTRY || aws ecr create-repository --repository-name $ECR_REGISTRY
 
     - name: Install PyBump
       run: |
@@ -45,7 +51,7 @@ runs:
     - name: Helm Chart
       env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ inputs.ecr-repository-name }}
+          ECR_REPOSITORY: ${{ inputs.ecr-repo-name }}
           HELM_EXPERIMENTAL_OCI: "1"
       run : |
         version=$(pybump get --file ${{ inputs.chart-path }}/Chart.yaml)
