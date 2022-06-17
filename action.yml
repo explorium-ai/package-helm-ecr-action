@@ -59,6 +59,6 @@ runs:
         ${{ inputs.chart-path }} \
         --app-version $version \
         --version $version
-        echo pushing $(basename ${{ inputs.chart-path }})-$version.tgz to oci://$ECR_REGISTRY
-        helm push $(basename ${{ inputs.chart-path }})-$version.tgz oci://$ECR_REGISTRY
+        echo pushing $ECR_REPOSITORY-$version.tgz to oci://$ECR_REGISTRY
+        helm push $ECR_REPOSITORY-$version.tgz oci://$ECR_REGISTRY
       shell: bash
