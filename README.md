@@ -16,5 +16,6 @@ Package a helm chart and deploy to an AWS ECR repository using OCI
     aws-access-key-id: fadsfads********
     aws-secret-access-key: fadsfads********
     aws-region: eu-west-1
+    ecr-repo-name: mychart
     chart-path: ./charts/mychart
 ```
