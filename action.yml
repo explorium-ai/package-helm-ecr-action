@@ -24,18 +24,22 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - id: install-aws-cli
+      uses: unfor19/install-aws-cli-action@v1.0.3
+      
     - uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ inputs.aws-access-key-id }}
         aws-secret-access-key: ${{ inputs.aws-secret-access-key }}
         aws-region: ${{ inputs.aws-region }}
 
-    # This is  an un-official build that allows helm login to the ECR
-    - uses: aws-actions/amazon-ecr-login@arjraman
-      id: login-ecr
-
-    - id: install-aws-cli
-      uses: unfor19/install-aws-cli-action@v1.0.3
+    - name: Login to ECR
+      id: ecr
+      uses: elgohr/ecr-login-action@v3
+      with:
+        access_key: ${{ inputs.aws-access-key-id }}
+        secret_access_key: ${{ inputs.aws-secret-access-key }}
+        region: ${{ inputs.aws-region }}
 
     - name: Create AWS ECR Repository if it does not exist
       shell: bash
