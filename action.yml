@@ -26,7 +26,7 @@ runs:
   steps:
     - id: install-aws-cli
       uses: unfor19/install-aws-cli-action@v1.0.3
-    - uses: azure/setup-helm@v3 
+
     - uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ inputs.aws-access-key-id }}
